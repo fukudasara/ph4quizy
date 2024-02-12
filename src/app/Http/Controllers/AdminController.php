@@ -38,11 +38,28 @@ class AdminController extends Controller
 
     public function editIndex($id) {
         $question = Question::find($id);
+
         return view('admin.edit.id', compact('question'));
     }
 
     public function edit(Request $request, $id) {
-        $choices = Question::find($id)->choices;
+        
+        // 質問のIDに対応する選択肢を取得
+        $choices = Question::findOrFail($id)->choices;
+        
+        // バリデーションルールを定義
+        $rules = [
+            'name0' => 'required|max:20',
+            'name1' => 'required|max:20',
+            'name2' => 'required|max:20',
+            'valid' => 'required|integer|between:0,2',
+        ];
+
+        // バリデーションを実行
+        $request->validate($rules);
+
+
+        // $choices = Question::find($id)->choices;
         foreach ($choices as $index => $choice) {
             $choice->name = $request->{'name'.$index};
             if ($index === intval($request->valid)) {
@@ -52,6 +69,7 @@ class AdminController extends Controller
             }
             $choice->save();
         }
+
         return redirect('/admin');
     }
 
