@@ -11,7 +11,6 @@ use App\Choice;
 class AdminControllerTest extends TestCase
 {
     use WithoutMiddleware;
-
     /**
      * A basic feature test example.
      *
@@ -19,6 +18,8 @@ class AdminControllerTest extends TestCase
      */
     public function test_edit()
     {
+        $this->withoutMiddleware();
+
         $questionId = 1;
         // 適切なダミーデータの作成
         $faker = Factory::create();
@@ -30,21 +31,24 @@ class AdminControllerTest extends TestCase
         ];
 
         // 適切な入力内容の場合、/adminへのリダイレクトが行われる
-        $response = $this->post("/admin/edit/{$questionId}");
+        $response = $this->post("/admin/edit/{$questionId}", $normal);
         $response->assertRedirect('/admin');
 
         // DBに正常に書き込まれている事を確認
         foreach (range(0, 2) as $key) {
             $this->assertDatabaseHas(app(Choice::class)->getTable(), [
                 'question_id' => $questionId,
-                'name'        => $normal['name'.$key],
+                'name'        => $normal['name' . $key],
                 'valid'       => $key == $normal['valid'] ? 1 : 0,
             ]);
         }
 
 
-        // DBに存在しないIDが指定されたURLの場合、404を返す
+        // DBに存在しないIDが指定されたURLの場合、404を返す 以下の1行を変更する
+        // $response = $this->post('/admin/edit/99999');
+        // フォームの値を第二引数に差し込む
         $response = $this->post('/admin/edit/99999', $normal);
+        // 404にするとエラーが起きる,なぜか302が返ってくる
         $response->assertStatus(404);
 
 
@@ -74,5 +78,7 @@ class AdminControllerTest extends TestCase
         $response->assertSessionHasErrors([
             'valid',
         ]);
-    }
+
+
+}
 }

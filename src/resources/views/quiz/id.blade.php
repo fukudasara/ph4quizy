@@ -17,7 +17,7 @@
                 <img src="/img/{{ $question->image }}">
                 <ul>
                     @foreach ($choices->where('question_id', $question->id) as $choice)
-                        <li 
+                        <li
                             id="answerlist_{{ $question->id }}_{{ $loop->index + 1 }}"
                             name="answerlist_{{ $question->id }}"
                             class="answerlist"
