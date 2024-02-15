@@ -30,3 +30,11 @@ jobs:
         run: |
           docker-compose exec -T app php artisan migrate:fresh --env=testing
           docker-compose exec -T app vendor/bin/phpunit --debug
+          
+  # PHPUnitの結果がエラーで終了した場合、スクリプトを停止する
+          if [ $? -eq 0 ]; then
+            echo "PHPUnit テストが成功しました"
+          else
+            echo "PHPUnit テストが失敗しました"
+            exit 1
+          fi
