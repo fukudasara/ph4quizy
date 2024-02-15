@@ -28,4 +28,5 @@ jobs:
           
       - name: 'PHPUnitの実行'
         run: |
+          docker-compose exec -T app php artisan migrate:fresh --env=testing
           docker-compose exec -T app vendor/bin/phpunit --debug
