@@ -13,7 +13,7 @@ jobs:
           docker-compose up -d
           while ! docker-compose exec -T db mysqladmin ping --host=127.0.0.1 --user=laravel --password=password --silent; do
             echo "mysqlの起動を待っています"
-            sleep 1
+            sleep 30
           done
           cp src/.env.example src/.env
           docker-compose exec -T app ls -l
