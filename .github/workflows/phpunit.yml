@@ -29,6 +29,7 @@ jobs:
           
       - name: 'PHPUnitの実行'
         run: |
+          mkdir -p ./logs
           docker-compose exec -T app php artisan migrate:fresh --env=testing
           docker-compose exec -T app vendor/bin/phpunit --debug > phpunit.log 2>&1
-          cat phpunit.log
+          cat ./logs/phpunit.log
