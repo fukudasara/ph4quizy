@@ -5,10 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Use Node.js 20
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 20
-          
+
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -28,4 +28,4 @@ jobs:
           
       - name: 'PHPUnitの実行'
         run: |
-          docker-compose exec -T app vendor/bin/phpunit
+          docker-compose exec -T app vendor/bin/phpunit --debug
