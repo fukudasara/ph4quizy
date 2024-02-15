@@ -20,4 +20,4 @@ jobs:
           docker-compose exec -T app php artisan key:generate
       - name: 'PHPUnitの実行'
         run: |
-          docker-compose exec -T app vendor/bin/phpunit
+          docker-compose exec -T app .vendor/bin/phpunit
